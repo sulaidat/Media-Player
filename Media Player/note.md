@@ -1,3 +1,12 @@
 - [x] responsive ui
-- [ ] switch between Play and Pause button on click
-- [ ] 
+- [x] switch between Play and Pause button on click
+- [ ] buttons
+  - [ ] previous + next media
+  - [ ] playlist
+  - [ ] loop 
+  - [ ] shuffle
+  - [ ] volume
+  - [ ] speed
+- [x] timeline slider
+  - [ ] hình ảnh đi theo slider
+

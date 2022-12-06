@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -26,15 +27,16 @@ namespace Media_Player
         DispatcherTimer _timer;
         Image _imgPlay;
         Image _imgPause;
+        bool _sliderBeingDragged = false;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            init();
+            initSth();
         }
 
-        void init()
+        void initSth()
         {
             _imgPlay = new Image();
             _imgPlay.Source = new BitmapImage(new Uri("/imgs/play.png", UriKind.Relative));
@@ -42,7 +44,7 @@ namespace Media_Player
             _imgPause.Source = new BitmapImage(new Uri("/imgs/pause.png", UriKind.Relative));
         }
 
-        void OnClick_Open(object sender, RoutedEventArgs e)
+        void OnClick_OpenMedia(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
             dialog.Filter = "Media files (*.mp3;*.mp4)|*.mp3;*.mp4|All files (*.*)|*.*";
@@ -52,13 +54,14 @@ namespace Media_Player
                 this.Title = $"Now playing {_current_media}";
                 mediaView.Source = new Uri(_current_media, UriKind.Absolute);
 
-                // wtf??
+                // in order to trigger the MediaOpened event, otherwise NaturalDuration will not be available
+                // nhiêu khê vãi???
                 mediaView.Play();
                 mediaView.Stop();
             }
         }
 
-        private void toggle_play_Checked(object sender, RoutedEventArgs e)
+        void OnChecked_PlayMedia(object sender, RoutedEventArgs e)
         {
             if (mediaView.Source != null)
             {
@@ -68,29 +71,23 @@ namespace Media_Player
             }
         }
 
-        private void toggle_play_Unchecked(object sender, RoutedEventArgs e)
+        void OnUnchecked_PauseMedia(object sender, RoutedEventArgs e)
         {
             if (mediaView.Source != null)
             {
                 mediaView.Pause();
-                _timer.Stop();
                 toggle_play.Content = _imgPlay;
             }
-        }
-        // Play the media.
-        void OnClick_PlayMedia(object sender, RoutedEventArgs e)
-        {
-        }
-
-        // Pause the media.
-        void OnClick_PauseMedia(object sender, RoutedEventArgs e)
-        {
         }
 
         // Stop the media.
         void OnClick_StopMedia(object sender, RoutedEventArgs e)
         {
             mediaView.Stop();
+            if (toggle_play.IsChecked ?? false)
+            {
+                toggle_play.IsChecked = false;
+            }
         }
 
         // Change the volume of the media.
@@ -131,32 +128,53 @@ namespace Media_Player
 
         private void timer_Tick(object? sender, EventArgs e)
         {
-            // update slider 
-            slider_timeline.Value = mediaView.Position.TotalSeconds;
+            // prevent tick when unnecessary
+            if (!_sliderBeingDragged && mediaView.Source != null && mediaView.NaturalDuration.HasTimeSpan)
+            {
+                // update slider 
+                slider_timeline.Value = mediaView.Position.TotalSeconds;
 
-            // update progress label 
-            txt_progress.Text = TimeSpan.FromSeconds(slider_timeline.Value).ToString(@"hh\:mm\:ss");
+                // update progress label 
+                txt_progress.Text = TimeSpan.FromSeconds(slider_timeline.Value).ToString(@"hh\:mm\:ss");
+            }
         }
 
         private void OnMediaOpened(object sender, RoutedEventArgs e)
         {
+            // set up volume, speed, timeline
             mediaView.Volume = (double)slider_volume.Value;
             mediaView.SpeedRatio = (double)slider_speed.Value;
 
-            _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromSeconds(1);
-            _timer.Tick += timer_Tick;
-
             slider_timeline.Minimum = 0;
             slider_timeline.Maximum = mediaView.NaturalDuration.TimeSpan.TotalSeconds;
-
             txt_progress.Text = TimeSpan.FromSeconds(0).ToString(@"hh\:mm\:ss");
             txt_duration.Text = TimeSpan.FromSeconds(slider_timeline.Maximum).ToString(@"hh\:mm\:ss");
+
+            // create timer
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMilliseconds(500);
+            _timer.Tick += timer_Tick;
         }
 
         private void OnMediaEnded(object sender, RoutedEventArgs e)
         {
             return;
+        }
+
+        private void OnDragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        {
+            _sliderBeingDragged = true;
+        }
+
+        private void OnDragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            _sliderBeingDragged = false;
+        }
+
+        private void OnSliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            mediaView.Position = TimeSpan.FromSeconds(slider_timeline.Value);
+            txt_progress.Text = TimeSpan.FromSeconds(slider_timeline.Value).ToString(@"hh\:mm\:ss");
         }
     }
 }
