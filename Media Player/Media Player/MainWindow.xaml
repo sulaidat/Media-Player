@@ -1,0 +1,182 @@
+﻿<Window x:Class="Media_Player.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Media_Player"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" MinWidth="500">
+
+    <Window.Resources >
+        <Style TargetType="Menu">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background" Value="LightSteelBlue"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid
+        ShowGridLines="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <!--TOOLBAR-->
+        <ToolBarTray Background="White" Grid.Row="0">
+            <ToolBar BandIndex="1">
+                <Menu>
+                    <MenuItem Header="Media" >
+                        <MenuItem 
+                            Header="Open File..." 
+                            Click="OnClick_Open"/>
+                        <MenuItem Header="hehe" />
+                        <MenuItem Header="hehe" />
+                        <MenuItem Header="hehe" />
+                    </MenuItem>
+                </Menu>
+                <Button Content="oke"/>
+                <Button Content="oke"/>
+            </ToolBar>
+            <ToolBar BandIndex="2">
+                <Button Content="oke"/>
+                <Button Content="oke"/>
+                <Button Content="oke"/>
+            </ToolBar>
+            <ToolBar BandIndex="3">
+                <Button Content="oke"/>
+                <Button Content="oke"/>
+                <Button Content="oke"/>
+                <Separator/>
+                <Button Content="oke"/>
+                <Button Content="oke"/>
+                <Button Content="oke"/>
+            </ToolBar>
+        </ToolBarTray>
+
+        <!-- To interactively stop, pause, and play the media, the LoadedBehavior 
+           property of the MediaElement must be set to "Manual". -->
+        <MediaElement 
+            Grid.Row="1"
+            Name="mediaView" 
+            StretchDirection="DownOnly"
+            LoadedBehavior="Manual" 
+            UnloadedBehavior="Stop" 
+            MediaOpened="OnMediaOpened" 
+            MediaEnded="OnMediaEnded"/>
+
+        <!--TIMELINE SLIDER-->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Name="txt_progress" Text="00:00:00" Margin="5, 0, 5, 0" />
+            <Slider Grid.Column="1" Name="slider_timeline"/>
+            <TextBlock Grid.Column="2" Name="txt_duration" Text="99:59:59" Margin="5, 0, 5, 0"/>
+        </Grid>
+
+        <!--MEDIA CONTROLS-->
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="457*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Grid.ColumnSpan="3" Margin="0,0,333,0">
+                <ToggleButton
+                    Name="toggle_play"
+                    Checked="toggle_play_Checked"
+                    Unchecked="toggle_play_Unchecked"
+                    Click="OnClick_PlayMedia"
+                    Width="20px" 
+                    Margin="5" >
+                    <Image Source="/imgs/play.png" />
+                </ToggleButton>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Button
+                Width="20px" 
+                Margin="5" >
+                    <Image Source="/imgs/previous.png" />
+                </Button>
+                <Button
+                Click="OnClick_StopMedia"
+                Width="20px" 
+                Margin="5" >
+                    <Image Source="/imgs/stop.png" />
+                </Button>
+                <Button
+                Width="20px" 
+                Margin="5" >
+                    <Image Source="/imgs/next.png" />
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Button
+                Width="20px" 
+                Margin="5" >
+                    <Image Source="/imgs/playlist.png" />
+                </Button>
+                <Button
+                Width="20px" 
+                Margin="5" >
+                    <Image Source="/imgs/repeat.png" />
+                </Button>
+                <Button
+                Width="20px" 
+                Margin="5" >
+                    <Image Source="/imgs/shuffle.png" />
+                </Button>
+
+            </StackPanel>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" >
+                <!-- Volume slider. This slider allows a Volume range between 0 and 1. -->
+                <Image Source="/imgs/speaker.png" Width="20px"/>
+                <Slider 
+                    Name="slider_volume" 
+                    VerticalAlignment="Center" 
+                    ValueChanged="ChangeMediaVolume" 
+                    Minimum="0" 
+                    Maximum="1" 
+                    Value="0.5" 
+                    Width="70"/>
+
+                <!-- Volume slider. This slider allows you to change the speed of the media playback. -->
+                <TextBlock 
+                Foreground="Black" Margin="5"  VerticalAlignment="Center" 
+                Text="Speed" />
+                <Slider 
+                    Name="slider_speed" 
+                    VerticalAlignment="Center" 
+                    ValueChanged="ChangeMediaSpeedRatio" 
+                    Value="1" 
+                    Width="70" />
+
+                <!-- Seek to slider. Ths slider allows you to jump to different parts of the media playback. -->
+                <TextBlock 
+                    Foreground="Black" 
+                    Margin="5"  
+                    VerticalAlignment="Center" 
+                    Text="Seek To" />
+                <Slider 
+                    Name="slider_seekto" 
+                    Margin="5" 
+                    ValueChanged="SeekToMediaPosition" 
+                    Width="70"/>
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</Window>

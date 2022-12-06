@@ -1,0 +1,3 @@
+- [x] responsive ui
+- [ ] switch between Play and Pause button on click
+- [ ] 

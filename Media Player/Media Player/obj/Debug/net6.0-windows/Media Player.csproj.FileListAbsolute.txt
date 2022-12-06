@@ -1,0 +1,22 @@
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\Media Player.csproj.AssemblyReference.cache
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\MainWindow.g.cs
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\App.g.cs
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\Media Player_MarkupCompile.cache
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\Media Player_MarkupCompile.lref
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\bin\Debug\net6.0-windows\Media Player.exe
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\bin\Debug\net6.0-windows\Media Player.deps.json
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\bin\Debug\net6.0-windows\Media Player.runtimeconfig.json
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\bin\Debug\net6.0-windows\Media Player.dll
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\bin\Debug\net6.0-windows\Media Player.pdb
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\MainWindow.baml
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\Media Player.g.resources
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\Media Player.GeneratedMSBuildEditorConfig.editorconfig
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\Media Player.AssemblyInfoInputs.cache
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\Media Player.AssemblyInfo.cs
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\Media Player.csproj.CoreCompileInputs.cache
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\Media Player.dll
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\refint\Media Player.dll
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\Media Player.pdb
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\Media Player.genruntimeconfig.cache
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\ref\Media Player.dll
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\Media Player_Content.g.cs
