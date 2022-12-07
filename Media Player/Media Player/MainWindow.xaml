@@ -24,6 +24,7 @@
             <RowDefinition />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <!--TOOLBAR-->
@@ -58,6 +59,7 @@
             </ToolBar>
         </ToolBarTray>
 
+        <Frame Name="mainpage" Grid.Row="1"/>
         <!-- To interactively stop, pause, and play the media, the LoadedBehavior 
            property of the MediaElement must be set to "Manual". -->
         <MediaElement 
@@ -80,12 +82,22 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0" Name="txt_progress" Text="00:00:00" Margin="5, 0, 5, 0" />
-            <Slider Grid.Column="1" Name="slider_timeline" 
-                    Thumb.DragStarted="OnDragStarted"
-                    Thumb.DragCompleted="OnDragCompleted"
-                    ValueChanged="OnSliderValueChanged"/>
-            <TextBlock Grid.Column="2" Name="txt_duration" Text="99:59:59" Margin="5, 0, 5, 0"/>
+            <TextBlock 
+                Grid.Column="0" 
+                Name="txt_progress" 
+                Text="00:00:00" 
+                Margin="5, 0, 5, 0" />
+            <Slider 
+                Grid.Column="1" 
+                Name="slider_timeline" 
+                Thumb.DragStarted="OnDragStarted" 
+                Thumb.DragCompleted="OnDragCompleted" 
+                ValueChanged="OnSliderValueChanged"/>
+            <TextBlock 
+                Grid.Column="2" 
+                Name="txt_duration" 
+                Text="99:59:59" 
+                Margin="5, 0, 5, 0"/>
         </Grid>
 
         <!--MEDIA CONTROLS-->
@@ -99,7 +111,11 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Column="0" Orientation="Horizontal" Grid.ColumnSpan="3" Margin="0,0,333,0">
+            <StackPanel
+                Grid.Column="0" 
+                Orientation="Horizontal"
+                Grid.ColumnSpan="3" 
+                Margin="0,0,333,0">
                 <ToggleButton
                     Name="toggle_play"
                     Checked="OnChecked_PlayMedia"
@@ -108,35 +124,56 @@
                     Margin="5" >
                     <Image Source="/imgs/play.png" />
                 </ToggleButton>
-                
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                
-                <Button Width="20px" Margin="5" >
+
+                <Separator 
+                    Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
+                <Button 
+                    Width="20px" 
+                    Margin="5" >
                     <Image Source="/imgs/previous.png" />
                 </Button>
-                <Button Click="OnClick_StopMedia" Width="20px" Margin="5" >
+                <Button 
+                    Click="OnClick_StopMedia" 
+                    Width="20px" 
+                    Margin="5" >
                     <Image Source="/imgs/stop.png" />
                 </Button>
-                <Button Width="20px" Margin="5" >
+                <Button 
+                    Width="20px" 
+                    Margin="5" >
                     <Image Source="/imgs/next.png" />
                 </Button>
-                
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                
-                <Button Width="20px" Margin="5" >
+
+                <Separator 
+                    Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
+                <Button
+                    Name="btn_openplaylist"
+                    Click="btn_openplaylist_Click"
+                    Width="20px" 
+                    Margin="5" >
                     <Image Source="/imgs/playlist.png" />
                 </Button>
-                <Button Width="20px" Margin="5" >
+                <Button 
+                    Width="20px" 
+                    Margin="5" >
                     <Image Source="/imgs/repeat.png" />
                 </Button>
-                <Button Width="20px" Margin="5" > 
+                <Button 
+                    Width="20px" 
+                    Margin="5" >
                     <Image Source="/imgs/shuffle.png" />
                 </Button>
 
             </StackPanel>
-            <StackPanel Grid.Column="2" Orientation="Horizontal" >
+            <StackPanel 
+                Grid.Column="2" 
+                Orientation="Horizontal" >
                 <!-- Volume slider. This slider allows a Volume range between 0 and 1. -->
-                <Image Source="/imgs/speaker.png" Width="20px"/>
+                <Image 
+                    Source="/imgs/speaker.png" 
+                    Width="20px"/>
                 <Slider 
                     Name="slider_volume" 
                     VerticalAlignment="Center" 
@@ -148,8 +185,10 @@
 
                 <!-- Volume slider. This slider allows you to change the speed of the media playback. -->
                 <TextBlock 
-                Foreground="Black" Margin="5"  VerticalAlignment="Center" 
-                Text="Speed" />
+                    Foreground="Black" 
+                    Margin="5"  
+                    VerticalAlignment="Center" 
+                    Text="Speed" />
                 <Slider 
                     Name="slider_speed" 
                     VerticalAlignment="Center" 
@@ -170,6 +209,5 @@
                     Width="70"/>
             </StackPanel>
         </Grid>
-
     </Grid>
 </Window>

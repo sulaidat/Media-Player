@@ -7,7 +7,27 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="MediaPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="PlaylistPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="PlaylistWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MediaPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PlaylistPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PlaylistWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

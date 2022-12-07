@@ -32,7 +32,7 @@ namespace Media_Player
         public MainWindow()
         {
             InitializeComponent();
-
+            
             initSth();
         }
 
@@ -175,6 +175,12 @@ namespace Media_Player
         {
             mediaView.Position = TimeSpan.FromSeconds(slider_timeline.Value);
             txt_progress.Text = TimeSpan.FromSeconds(slider_timeline.Value).ToString(@"hh\:mm\:ss");
+        }
+
+        private void btn_openplaylist_Click(object sender, RoutedEventArgs e)
+        {
+            var screen = new PlaylistWindow();
+            screen.Show();  
         }
     }
 }

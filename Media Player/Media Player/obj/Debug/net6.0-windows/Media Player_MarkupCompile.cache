@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\App.xaml
-11407045341
+41237452950
 1-1606303973
-3-1233169557
+71199937321
 194618410957
-MainWindow.xaml;
+MainWindow.xaml;MediaPage.xaml;PlaylistPage.xaml;PlaylistWindow.xaml;
 
 False
 

@@ -1,0 +1,73 @@
+﻿<Window x:Class="Media_Player.PlaylistWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Media_Player"
+        mc:Ignorable="d"
+        Title="PlaylistWindow" Height="450" Width="800">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+
+        <Grid
+            Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel 
+                Grid.Row="0"
+                Orientation="Vertical">
+                <Label 
+                    Content="My Playlists" />
+                <ListBox 
+                    SelectionChanged="OnSelectionChanged"
+                    Name="listbox_playlist"
+                    HorizontalContentAlignment="Stretch">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image 
+                                    Grid.Column="0"
+                                    Source="/imgs/playlist.png" />
+                                <TextBox 
+                                    Grid.Column="1"
+                                    Text="{Binding Name}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+            <Button 
+                Click="OnClick_NewPlaylist"
+                HorizontalAlignment="Left"
+                Grid.Row="1"
+                Content="+ New Playlist" />
+        </Grid>
+
+        <GridSplitter 
+            Grid.Column="1"
+            HorizontalAlignment="Stretch" />
+        <StackPanel 
+            Grid.Column="2"
+            Orientation="Vertical">
+            <DataGrid
+                Name="datagrid_medias" />
+        </StackPanel>
+    </Grid>
+
+</Window>
