@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using Path = System.IO.Path;
 using System.Collections.Specialized;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace Media_Player
 {
@@ -19,15 +20,28 @@ namespace Media_Player
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            _playlists = new ObservableCollection<Playlist>();
+            string directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string filePath = Path.Combine(directory, "playlists.json");
+            if (File.Exists(filePath))
+            {
+                _playlists = JsonConvert.DeserializeObject<ObservableCollection<Playlist>>(File.ReadAllText(filePath));
+            }
+            else
+            {
+                _playlists = new ObservableCollection<Playlist>();
+            }
             _playlists.CollectionChanged += SavePlaylists;
+            foreach (var playlist in _playlists)
+            {
+                playlist.List.CollectionChanged += SavePlaylists;
+            }
             listview_playlist.ItemsSource = _playlists;
         }
 
         private void SavePlaylists(object? sender, NotifyCollectionChangedEventArgs e)
         {
             string json = JsonConvert.SerializeObject(_playlists);
-            //StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            File.WriteAllText("playlists.json", json);
         }
 
         ObservableCollection<Playlist> _playlists { get; set; }
@@ -43,7 +57,6 @@ namespace Media_Player
             var newPlaylist = new Playlist();
             newPlaylist.Name = "Playlist";
             newPlaylist.List = new ObservableCollection<Media>();
-            newPlaylist.List.CollectionChanged += SavePlaylists;
             _playlists.Add(newPlaylist);
         }
 
@@ -63,7 +76,7 @@ namespace Media_Player
         private void OnClick_RenamePlaylist(object sender, RoutedEventArgs e)
         {
             var dialog = new PlaylistRenameWindow(_playlists[listview_playlist.SelectedIndex]);
-            if (dialog.ShowDialog()??false)
+            if (dialog.ShowDialog() ?? false)
             {
                 _playlists[listview_playlist.SelectedIndex].Name = dialog.Playlist.Name;
             }
@@ -71,7 +84,7 @@ namespace Media_Player
 
         private void OnClick_RemovePlaylist(object sender, RoutedEventArgs e)
         {
-            _playlists.RemoveAt(listview_playlist.SelectedIndex);   
+            _playlists.RemoveAt(listview_playlist.SelectedIndex);
         }
 
         private void OnClick_RemoveMedia(object sender, RoutedEventArgs e)
