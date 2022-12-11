@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Media_Player"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" MinWidth="500">
+        Title="MainWindow" Height="450" Width="800" MinWidth="500" Loaded="Window_Loaded">
 
     <Window.Resources >
         <Style TargetType="Menu">
@@ -92,6 +92,7 @@
                 Name="slider_timeline" 
                 Thumb.DragStarted="OnDragStarted" 
                 Thumb.DragCompleted="OnDragCompleted" 
+                IsMoveToPointEnabled="True"
                 ValueChanged="OnSliderValueChanged"/>
             <TextBlock 
                 Grid.Column="2" 
@@ -150,7 +151,7 @@
 
                 <Button
                     Name="btn_openplaylist"
-                    Click="btn_openplaylist_Click"
+                    Click="OnClick_OpenPlaylist"
                     Width="20px" 
                     Margin="5" >
                     <Image Source="/imgs/playlist.png" />

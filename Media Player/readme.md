@@ -15,19 +15,22 @@
 - [ ] Display preview when seeking
 - [ ] Add hooking to support global shortcut key for pause / play / skip to next file
 
-### das
+### my checklist
 
 - [x] responsive ui
 - [x] switch between Play and Pause button on click
 - [ ] buttons
   - [ ] previous + next media
-  - [x] playlist
+  - [x] open playlist
   - [ ] loop 
   - [ ] shuffle
   - [ ] volume
   - [ ] speed
-- [x] timeline slider
+- [ ] timeline slider
   - [x] preview come up with slider (while played only)
+  - [ ] change media position by 
+    - [x] dragging thumb 
+    - [x] or clicking on track
 - [ ] playlist window 
   - [x] add, remove playlist
   - [x] add, remove medias of a playlist
@@ -35,7 +38,9 @@
   - [ ] context menu
     - [x] rename
     - [ ] import, export 
-  - [ ] autosave playlist locally
+  - [x] autosave playlist locally
+  - [x] play media from playlist window
+  - [ ] display which media and playlist is currently playing
 - [ ] keyboard hook
   - [ ] go forward x seconds
   - [ ] go backward x seconds

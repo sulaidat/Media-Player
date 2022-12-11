@@ -89,7 +89,8 @@
             Orientation="Vertical">
 
             <DataGrid
-                Name="datagrid_medias" >
+                Name="datagrid_medias" 
+                AutoGenerateColumns="False">
                 <DataGrid.Resources>
                     <ContextMenu x:Key="rowMenu" >
                         <MenuItem Header="Remove" Click="OnClick_RemoveMedia"/>
@@ -98,8 +99,19 @@
                 <DataGrid.ItemContainerStyle>
                     <Style TargetType="DataGridRow">
                         <Setter Property="ContextMenu" Value="{StaticResource rowMenu}" />
+                        <EventSetter Event="MouseDoubleClick" Handler="OnMouseDoubleClick_PlayMedia" />
                     </Style>
                 </DataGrid.ItemContainerStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn 
+                        IsReadOnly="True"
+                        Header="Name" 
+                        Binding="{Binding Name}" />
+                    <DataGridTextColumn 
+                        IsReadOnly="True"   
+                        Header="Path" 
+                        Binding="{Binding Path}" />
+                </DataGrid.Columns>
             </DataGrid>
             <Button 
                 Name="btn_addMedia"

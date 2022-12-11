@@ -6,6 +6,7 @@ using Path = System.IO.Path;
 using System.Collections.Specialized;
 using Newtonsoft.Json;
 using System.IO;
+using System;
 
 namespace Media_Player
 {
@@ -14,6 +15,9 @@ namespace Media_Player
     /// </summary>
     public partial class PlaylistWindow : Window
     {
+        ObservableCollection<Playlist> _playlists { get; set; }
+        public EventHandler<string> MediaSelected;
+
         public PlaylistWindow()
         {
             InitializeComponent();
@@ -44,7 +48,6 @@ namespace Media_Player
             File.WriteAllText("playlists.json", json);
         }
 
-        ObservableCollection<Playlist> _playlists { get; set; }
 
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -90,6 +93,11 @@ namespace Media_Player
         private void OnClick_RemoveMedia(object sender, RoutedEventArgs e)
         {
             _playlists[listview_playlist.SelectedIndex].List.RemoveAt(datagrid_medias.SelectedIndex);
+        }
+
+        private void OnMouseDoubleClick_PlayMedia(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            MediaSelected?.Invoke(this, _playlists[listview_playlist.SelectedIndex].List[datagrid_medias.SelectedIndex].Path);
         }
     }
 }
