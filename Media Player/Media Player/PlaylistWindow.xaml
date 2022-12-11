@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Media_Player"
         mc:Ignorable="d"
-        Title="PlaylistWindow" Height="450" Width="800">
+        Title="PlaylistWindow" Height="450" Width="800" Loaded="Window_Loaded">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="5"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5* "/>
+        </Grid.ColumnDefinitions> 
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
@@ -30,11 +30,33 @@
                 Orientation="Vertical">
                 <Label 
                     Content="My Playlists" />
-                <ListBox 
+                <ListView 
                     SelectionChanged="OnSelectionChanged"
-                    Name="listbox_playlist"
-                    HorizontalContentAlignment="Stretch">
-                    <ListBox.ItemTemplate>
+                    Name="listview_playlist"
+                    HorizontalContentAlignment="Stretch"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListView.Resources>
+                        <ContextMenu x:Key="listview_contextmenu" >
+                            <MenuItem Header="Rename" Click="OnClick_RenamePlaylist" />
+                            <MenuItem Header="Remove" Click="OnClick_RemovePlaylist" />
+                            <!--<MenuItem Header="Delete" Click="MenuItem_Delete_Click">
+                                <MenuItem.Icon>
+                                    <Image Source="/Images/other/delete.png"/>
+                                </MenuItem.Icon>
+                            </MenuItem>-->
+                        </ContextMenu>
+                    </ListView.Resources>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="ContextMenu" Value="{StaticResource listview_contextmenu}"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -44,13 +66,13 @@
                                 <Image 
                                     Grid.Column="0"
                                     Source="/imgs/playlist.png" />
-                                <TextBox 
+                                <TextBlock 
                                     Grid.Column="1"
-                                    Text="{Binding Name}" />
+                                    Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                    </ListView.ItemTemplate>
+                </ListView>
             </StackPanel>
             <Button 
                 Click="OnClick_NewPlaylist"
@@ -65,8 +87,26 @@
         <StackPanel 
             Grid.Column="2"
             Orientation="Vertical">
+
             <DataGrid
-                Name="datagrid_medias" />
+                Name="datagrid_medias" >
+                <DataGrid.Resources>
+                    <ContextMenu x:Key="rowMenu" >
+                        <MenuItem Header="Remove" Click="OnClick_RemoveMedia"/>
+                    </ContextMenu>
+                </DataGrid.Resources>
+                <DataGrid.ItemContainerStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="ContextMenu" Value="{StaticResource rowMenu}" />
+                    </Style>
+                </DataGrid.ItemContainerStyle>
+            </DataGrid>
+            <Button 
+                Name="btn_addMedia"
+                Visibility="Hidden"
+                Click="OnClick_AddMedia"
+                HorizontalAlignment="Left"
+                Content="+ Add Media" />
         </StackPanel>
     </Grid>
 

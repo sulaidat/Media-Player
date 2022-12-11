@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Win32;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Path = System.IO.Path;
+using System.Collections.Specialized;
+using Newtonsoft.Json;
 
 namespace Media_Player
 {
@@ -23,35 +16,67 @@ namespace Media_Player
         public PlaylistWindow()
         {
             InitializeComponent();
-
+        }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
             _playlists = new ObservableCollection<Playlist>();
-            _playlists.Add(new Playlist() { Name = "Playlist#1", List = new List<Media>() });
-            _playlists.Add(new Playlist() { Name = "Playlist#2", List = new List<Media>() });
-            _playlists.Add(new Playlist() { Name = "Playlist#3", List = new List<Media>() });
-            listbox_playlist.ItemsSource = _playlists;
+            _playlists.CollectionChanged += SavePlaylists;
+            listview_playlist.ItemsSource = _playlists;
         }
+
+        private void SavePlaylists(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            string json = JsonConvert.SerializeObject(_playlists);
+            //StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+        }
+
         ObservableCollection<Playlist> _playlists { get; set; }
-
-        public class Playlist
-        {
-            public string Name { get; set; }
-            public List<Media> List { get; set; }
-        }
-
-        public class Media
-        {
-            public string Name { get; set; }
-            public string Path { get; set; }
-        }
 
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            datagrid_medias.ItemsSource = _playlists[listbox_playlist.SelectedIndex].List;
+            datagrid_medias.ItemsSource = _playlists[listview_playlist.SelectedIndex].List;
+            btn_addMedia.Visibility = Visibility.Visible;
         }
 
         private void OnClick_NewPlaylist(object sender, RoutedEventArgs e)
         {
-            _playlists.Add(new Playlist() { Name = "Playlist", List = new List<Media>() });
+            var newPlaylist = new Playlist();
+            newPlaylist.Name = "Playlist";
+            newPlaylist.List = new ObservableCollection<Media>();
+            newPlaylist.List.CollectionChanged += SavePlaylists;
+            _playlists.Add(newPlaylist);
+        }
+
+        private void OnClick_AddMedia(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "Media files (*.mp3;*.mp4)|*.mp3;*.mp4|All files (*.*)|*.*";
+            if (dialog.ShowDialog() ?? false)
+            {
+                var newMedia = new Media();
+                newMedia.Path = dialog.FileName;
+                newMedia.Name = Path.GetFileName(dialog.FileName);
+                _playlists[listview_playlist.SelectedIndex].List.Add(newMedia);
+            }
+        }
+
+        private void OnClick_RenamePlaylist(object sender, RoutedEventArgs e)
+        {
+            var dialog = new PlaylistRenameWindow(_playlists[listview_playlist.SelectedIndex]);
+            if (dialog.ShowDialog()??false)
+            {
+                _playlists[listview_playlist.SelectedIndex].Name = dialog.Playlist.Name;
+            }
+        }
+
+        private void OnClick_RemovePlaylist(object sender, RoutedEventArgs e)
+        {
+            _playlists.RemoveAt(listview_playlist.SelectedIndex);   
+        }
+
+        private void OnClick_RemoveMedia(object sender, RoutedEventArgs e)
+        {
+            _playlists[listview_playlist.SelectedIndex].List.RemoveAt(datagrid_medias.SelectedIndex);
         }
     }
 }

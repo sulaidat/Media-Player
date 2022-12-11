@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "VccSX3T/QHS9pxa3BZdNKhdW5wMqmyDLr4SoQqmiAW/TdPjp/ykymGsz28nnftGbHGpYBqjYFvi1SaxkqDlqhw==",
+  "dgSpecHash": "X3yDEUUOfShr+VyzUG5HtNcfmfoQXbESBDefrXNcyLePsQSMHyvOHQN/eqxA6iK6hcu89/Zoya8kNkZIfuNjuA==",
   "success": true,
   "projectFilePath": "D:\\OneDrive - VNU-HCMUS\\nam3\\windows\\Media-Player\\Media Player\\Media Player\\Media Player.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\LENOVO\\.nuget\\packages\\newtonsoft.json\\12.0.1\\newtonsoft.json.12.0.1.nupkg.sha512",
+    "C:\\Users\\LENOVO\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512"
+  ],
   "logs": []
 }

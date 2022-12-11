@@ -1,6 +1,6 @@
 # A. Core requirements (7 points)
 
-- [ ] Add all media files you want to play into a playlist
+- [x] Add all media files you want to play into a playlist
 - [ ] Add and remove files from the playlist
 - [ ] Save and load a playlist
 - [ ] Show the current progress of the playing file, allow seeking
@@ -15,19 +15,27 @@
 - [ ] Display preview when seeking
 - [ ] Add hooking to support global shortcut key for pause / play / skip to next file
 
-
+### das
 
 - [x] responsive ui
 - [x] switch between Play and Pause button on click
 - [ ] buttons
   - [ ] previous + next media
-  - [ ] playlist
+  - [x] playlist
   - [ ] loop 
   - [ ] shuffle
   - [ ] volume
   - [ ] speed
 - [x] timeline slider
   - [x] preview come up with slider (while played only)
+- [ ] playlist window 
+  - [x] add, remove playlist
+  - [x] add, remove medias of a playlist
+  - [ ] drag file to add media to playlist
+  - [ ] context menu
+    - [x] rename
+    - [ ] import, export 
+  - [ ] autosave playlist locally
 - [ ] keyboard hook
   - [ ] go forward x seconds
   - [ ] go backward x seconds
