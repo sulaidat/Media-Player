@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Media_Player
 {
@@ -14,6 +15,7 @@ namespace Media_Player
         private string _name;
         private ObservableCollection<Media> _list;
         private bool _isPlaying;
+        private SolidColorBrush _background;
 
         public string Name { 
             get { return _name; }
@@ -38,6 +40,15 @@ namespace Media_Player
             set
             {
                 _isPlaying = value;
+                EmitPropertyChanged();
+            }
+        }
+        public SolidColorBrush Background
+        {
+            get { return _background; }
+            set
+            {
+                _background = value;
                 EmitPropertyChanged();
             }
         }

@@ -216,5 +216,10 @@ namespace Media_Player
             _playlistWindow = PlaylistWindow.GetInstance();
             _playlistWindow.MediaSelected += PrepareMedia;
         }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            _playlistWindow.Close();
+        }
     }
 }

@@ -39,31 +39,33 @@
                         <ContextMenu x:Key="listview_contextmenu" >
                             <MenuItem Header="Rename" Click="OnClick_RenamePlaylist" />
                             <MenuItem Header="Remove" Click="OnClick_RemovePlaylist" />
+                            <MenuItem Header="Export Single Playlist..." Click="OnClick_ExportSinglePlaylist" />
+                            <MenuItem Header="Export All Playlists..." Click="OnClick_ExportAllPlaylist" />
+                            <MenuItem Header="Import Single Playlist..." Click="OnClick_ImportSinglePlaylist" />
+                            <MenuItem Header="Import Multiple Playlists..." Click="OnClick_ImportMultiplePlaylist" />
                             <!--<MenuItem Header="Delete" Click="MenuItem_Delete_Click">
                                 <MenuItem.Icon>
                                     <Image Source="/Images/other/delete.png"/>
                                 </MenuItem.Icon>
                             </MenuItem>-->
                         </ContextMenu>
-                        <Style TargetType="ListViewItem">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsPlaying, UpdateSourceTrigger=PropertyChanged}" Value="true">
-                                    <Setter Property="Background" Value="#a0a0a4" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
                     </ListView.Resources>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="ContextMenu" Value="{StaticResource listview_contextmenu}"/>
                             <!--<Setter Property="Background" Value="#a0a0a4"/>-->
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsPlaying, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                    <Setter Property="Background" Value="#a0a0a4" />
+                                </DataTrigger>
+                            </Style.Triggers>
                         </Style>
                     </ListView.ItemContainerStyle>
-                    <ListView.ItemsPanel>
+                    <!--<ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Vertical" />
                         </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
+                    </ListView.ItemsPanel>-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -76,6 +78,7 @@
                                     Source="/imgs/playlist.png" />
                                 <TextBlock 
                                     Grid.Column="1"
+                                    Background="{Binding Background, UpdateSourceTrigger=PropertyChanged}"
                                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </DataTemplate>
@@ -97,6 +100,8 @@
             Orientation="Vertical">
 
             <DataGrid
+                AllowDrop="True"
+                DragDrop.Drop="OnDrop_AddMedias"
                 Name="datagrid_medias" 
                 AutoGenerateColumns="False">
                 <DataGrid.Resources>
