@@ -45,10 +45,18 @@
                                 </MenuItem.Icon>
                             </MenuItem>-->
                         </ContextMenu>
+                        <Style TargetType="ListViewItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsPlaying, UpdateSourceTrigger=PropertyChanged}" Value="true">
+                                    <Setter Property="Background" Value="#a0a0a4" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
                     </ListView.Resources>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="ContextMenu" Value="{StaticResource listview_contextmenu}"/>
+                            <!--<Setter Property="Background" Value="#a0a0a4"/>-->
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.ItemsPanel>

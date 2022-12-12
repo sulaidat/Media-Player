@@ -12,6 +12,7 @@ namespace Media_Player
     {
         private string _name;
         private string _path;
+        private bool _isPlaying;
 
         public string Name {
             get { return _name; }
@@ -26,6 +27,15 @@ namespace Media_Player
             set
             {
                 _path = value;
+                EmitPropertyChanged();
+            }
+        }
+        public bool IsPlaying
+        {
+            get { return _isPlaying; }
+            set
+            {
+                _isPlaying = value;
                 EmitPropertyChanged();
             }
         }

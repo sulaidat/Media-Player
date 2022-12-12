@@ -13,6 +13,7 @@ namespace Media_Player
     {
         private string _name;
         private ObservableCollection<Media> _list;
+        private bool _isPlaying;
 
         public string Name { 
             get { return _name; }
@@ -28,6 +29,15 @@ namespace Media_Player
             set
             {
                 _list = value;
+                EmitPropertyChanged();
+            }
+        }
+        public bool IsPlaying
+        {
+            get { return _isPlaying; }
+            set
+            {
+                _isPlaying = value;
                 EmitPropertyChanged();
             }
         }

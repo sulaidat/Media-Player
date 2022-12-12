@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,12 +24,11 @@ namespace Media_Player
     /// </summary>
     public partial class MainWindow : Window
     {
-        string _currentMedia;
         DispatcherTimer _timer;
         Image _imgPlay;
         Image _imgPause;
+        PlaylistWindow _playlistWindow;
         bool _sliderBeingDragged = false;
-
 
 
         public MainWindow()
@@ -174,27 +174,31 @@ namespace Media_Player
 
         private void OnClick_OpenPlaylist(object sender, RoutedEventArgs e)
         {
-            var screen = new PlaylistWindow();
-            screen.MediaSelected += PrepareMedia;
-            screen.Show();  
+            _playlistWindow.Show();  
         }
 
         private void PrepareMedia(object? sender, string filePath)
         {
-            _currentMedia = filePath;
-            this.Title = $"Now playing {_currentMedia}";
-            mediaView.Source = new Uri(_currentMedia, UriKind.Absolute);
+            this.Title = $"Now playing {filePath}";
+            mediaView.Source = new Uri(filePath, UriKind.Absolute);
 
             // ???????
             mediaView.Play();
             mediaView.Stop();
 
-            //if (toggle_play.IsChecked ?? false)
-            //{
-            //    toggle_play.IsChecked = false;
-            //}
-            //toggle_play.IsChecked = true;
-            OnChecked_PlayMedia(null, null);
+            ForcePlayMedia();
+        }
+
+        private void ForcePlayMedia()
+        {
+            if (!toggle_play.IsChecked ?? true)
+            {
+                toggle_play.IsChecked = true;
+            } else
+            {
+                toggle_play.IsChecked = false;
+                toggle_play.IsChecked = true;
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -207,6 +211,10 @@ namespace Media_Player
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromMilliseconds(500);
             _timer.Tick += timer_Tick;
+
+            // subscribe _playlistWindow
+            _playlistWindow = PlaylistWindow.GetInstance();
+            _playlistWindow.MediaSelected += PrepareMedia;
         }
     }
 }

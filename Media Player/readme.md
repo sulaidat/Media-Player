@@ -1,6 +1,6 @@
 # A. Core requirements (7 points)
 
-- [x] Add all media files you want to play into a playlist
+- [ ] Add all media files you want to play into a playlist
 - [ ] Add and remove files from the playlist
 - [ ] Save and load a playlist
 - [ ] Show the current progress of the playing file, allow seeking
@@ -39,7 +39,9 @@
     - [x] rename
     - [ ] import, export 
   - [x] autosave playlist locally
-  - [x] play media from playlist window
+  - [x] load playlists from `playlists.json`
+    - [x] remove non existing media after loaded (in case `playlists.json` is modified unintendedly)
+  - [x] force play when double click media from playlist window 
   - [ ] display which media and playlist is currently playing
 - [ ] keyboard hook
   - [ ] go forward x seconds
