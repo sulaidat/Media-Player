@@ -157,6 +157,8 @@
                     <Image Source="/imgs/playlist.png" />
                 </Button>
                 <Button 
+                    Name="btn_loop"
+                    Click="OnClick_ToggleLoop"
                     Width="20px" 
                     Margin="5" >
                     <Image Source="/imgs/repeat.png" />

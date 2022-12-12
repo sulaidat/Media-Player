@@ -26,7 +26,9 @@
 - [ ] buttons
   - [ ] previous + next media
   - [x] open playlist
-  - [ ] loop 
+  - [x] toggle loop button
+    - [ ] loop 
+    - [ ] loop one
   - [ ] shuffle
   - [ ] volume
   - [ ] speed
@@ -45,6 +47,7 @@
     - [x] check duplicate when adding
   - [x] context menu
     - [x] rename
+      - [ ] select all text when focus on texbox
     - [x] import, export playlist
   - [x] autosave playlist locally
   - [x] load playlists from `playlists.json`

@@ -27,14 +27,17 @@ namespace Media_Player
         DispatcherTimer _timer;
         Image _imgPlay;
         Image _imgPause;
+        Image _imgRepeat;
+        Image _imgRepeatOne;
         PlaylistWindow _playlistWindow;
         bool _sliderBeingDragged = false;
+        bool? _loopState = null;
 
 
         public MainWindow()
         {
             InitializeComponent();
-            
+
             initSth();
         }
 
@@ -44,6 +47,10 @@ namespace Media_Player
             _imgPlay.Source = new BitmapImage(new Uri("/imgs/play.png", UriKind.Relative));
             _imgPause = new Image();
             _imgPause.Source = new BitmapImage(new Uri("/imgs/pause.png", UriKind.Relative));
+            _imgRepeat = new Image();
+            _imgRepeat.Source = new BitmapImage(new Uri("/imgs/repeat.png", UriKind.Relative));
+            _imgRepeatOne = new Image();
+            _imgRepeatOne.Source = new BitmapImage(new Uri("/imgs/repeat-once.png", UriKind.Relative));
         }
 
         void OnClick_OpenMedia(object sender, RoutedEventArgs e)
@@ -60,6 +67,17 @@ namespace Media_Player
         {
             PlayMedia();
         }
+        void OnUnchecked_PauseMedia(object sender, RoutedEventArgs e)
+        {
+            PauseMedia();
+        }
+
+        // Stop the media.
+        void OnClick_StopMedia(object sender, RoutedEventArgs e)
+        {
+            StopMedia();
+        }
+
 
         private void PlayMedia()
         {
@@ -70,12 +88,6 @@ namespace Media_Player
                 toggle_play.Content = _imgPause;
             }
         }
-
-        void OnUnchecked_PauseMedia(object sender, RoutedEventArgs e)
-        {
-            PauseMedia();
-        }
-
         private void PauseMedia()
         {
             if (mediaView.Source != null)
@@ -84,9 +96,7 @@ namespace Media_Player
                 toggle_play.Content = _imgPlay;
             }
         }
-
-        // Stop the media.
-        void OnClick_StopMedia(object sender, RoutedEventArgs e)
+        private void StopMedia()
         {
             mediaView.Stop();
             if (toggle_play.IsChecked ?? false)
@@ -153,7 +163,7 @@ namespace Media_Player
 
         private void OnMediaEnded(object sender, RoutedEventArgs e)
         {
-            return;
+            StopMedia();
         }
 
         private void OnDragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
@@ -174,7 +184,7 @@ namespace Media_Player
 
         private void OnClick_OpenPlaylist(object sender, RoutedEventArgs e)
         {
-            _playlistWindow.Show();  
+            _playlistWindow.Show();
         }
 
         private void PrepareMedia(object? sender, string filePath)
@@ -194,7 +204,8 @@ namespace Media_Player
             if (!toggle_play.IsChecked ?? true)
             {
                 toggle_play.IsChecked = true;
-            } else
+            }
+            else
             {
                 toggle_play.IsChecked = false;
                 toggle_play.IsChecked = true;
@@ -220,6 +231,42 @@ namespace Media_Player
         private void Window_Closed(object sender, EventArgs e)
         {
             _playlistWindow.Close();
+        }
+
+        private void OnClick_ToggleLoop(object sender, RoutedEventArgs e)
+        {
+            // none to loop
+            if (_loopState == null)
+            {
+                _loopState = true;
+                btn_loop.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#a0a0a4");
+                mediaView.MediaEnded += Loop;
+            }
+            // loop to loop one
+            else if (_loopState == true)
+            {
+                _loopState = false;
+                btn_loop.Content = _imgRepeatOne;
+                mediaView.MediaEnded -= Loop;
+                mediaView.MediaEnded += LoopOne;
+            } 
+            // loop one to none
+            else if (_loopState == false)
+            {
+                _loopState = null;
+                btn_loop.Content = _imgRepeat;
+                btn_loop.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#dddddd");
+                mediaView.MediaEnded -= LoopOne;
+            }
+        }
+
+        private void Loop(object sender, RoutedEventArgs e)
+        {
+            PlayMedia();
+        }
+        private void LoopOne(object sender, RoutedEventArgs e)
+        {
+            PlayMedia();
         }
     }
 }
