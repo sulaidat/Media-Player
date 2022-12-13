@@ -118,6 +118,7 @@
                 Grid.ColumnSpan="3" 
                 Margin="0,0,333,0">
                 <ToggleButton
+                    IsChecked="False"
                     Name="toggle_play"
                     Checked="OnChecked_PlayMedia"
                     Unchecked="OnUnchecked_PauseMedia"

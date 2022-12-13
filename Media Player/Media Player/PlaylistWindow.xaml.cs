@@ -117,7 +117,7 @@ namespace Media_Player
         {
             var dialog = new OpenFileDialog();
             dialog.Multiselect = true;
-            dialog.Filter = "Media files (*.mp3;*.mp4)|*.mp3;*.mp4|All files (*.*)|*.*";
+            dialog.Filter = "Media files (*.mp3;*.mp4;*flv;*.mpg)|*.mp3;*.mp4;*flv;*.mpg|All files (*.*)|*.*";
             dialog.RestoreDirectory = true;
             if (dialog.ShowDialog() ?? false)
             {
@@ -173,7 +173,7 @@ namespace Media_Player
             _playlists[listview_playlist.SelectedIndex].IsPlaying = true;
 
             var args = new MediaSelectedArgs();
-            args.MediaList = _playlists[listview_playlist.SelectedIndex].List;
+            args.Playlist = _playlists[listview_playlist.SelectedIndex].List;
             args.PlaylistIndex = listview_playlist.SelectedIndex;
             args.MediaIndex = datagrid_medias.SelectedIndex;
             MediaSelected?.Invoke(this, args);
@@ -259,7 +259,7 @@ namespace Media_Player
 
     public class MediaSelectedArgs: EventArgs
     {
-        public ObservableCollection<Media> MediaList { get; set; }
+        public ObservableCollection<Media> Playlist { get; set; }
         public int PlaylistIndex { get; set; }
         public int MediaIndex { get; set; }
     }

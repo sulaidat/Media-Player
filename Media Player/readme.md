@@ -60,6 +60,11 @@
   - [x] force play when double click media from playlist window 
   - [ ] display which media and playlist is currently playing
   - [ ] listview cannot scroll ???
+- [ ] Save and load last state
+  - [ ] playlist and media index
+  - [ ] media position
+  - [ ] modes 
+
 - [ ] keyboard hook
   - [ ] go forward x seconds
   - [ ] go backward x seconds
