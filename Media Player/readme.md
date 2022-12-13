@@ -4,8 +4,8 @@
 - [x] Add and remove files from the playlist
 - [x] Save and load a playlist
 - [ ] Show the current progress of the playing file, allow seeking
-- [ ] Play in shuffle mode
-- [ ] Play the next file in playlist, play the previous file in the playlist
+- [x] Play in shuffle mode
+- [x] Play the next file in playlist, play the previous file in the playlist
 
 # B. Suggested improvement (3 points)
 
