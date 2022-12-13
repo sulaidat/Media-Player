@@ -130,6 +130,7 @@
                     Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
 
                 <Button 
+                    Click="OnClick_PlayPreviousMedia"
                     Width="20px" 
                     Margin="5" >
                     <Image Source="/imgs/previous.png" />
@@ -141,6 +142,7 @@
                     <Image Source="/imgs/stop.png" />
                 </Button>
                 <Button 
+                    Click="OnClick_PlayNextMedia"
                     Width="20px" 
                     Margin="5" >
                     <Image Source="/imgs/next.png" />
@@ -164,6 +166,8 @@
                     <Image Source="/imgs/repeat.png" />
                 </Button>
                 <Button 
+                    Name="btn_shuffle"
+                    Click="OnClick_ToggleShuffleMode"
                     Width="20px" 
                     Margin="5" >
                     <Image Source="/imgs/shuffle.png" />

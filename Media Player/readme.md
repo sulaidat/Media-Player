@@ -1,8 +1,8 @@
 # A. Core requirements (7 points)
 
-- [ ] Add all media files you want to play into a playlist
-- [ ] Add and remove files from the playlist
-- [ ] Save and load a playlist
+- [x] Add all media files you want to play into a playlist
+- [x] Add and remove files from the playlist
+- [x] Save and load a playlist
 - [ ] Show the current progress of the playing file, allow seeking
 - [ ] Play in shuffle mode
 - [ ] Play the next file in playlist, play the previous file in the playlist
@@ -24,19 +24,24 @@
 
 - [x] switch between Play and Pause button on click
 - [ ] buttons
-  - [ ] previous + next media
+  - [x] previous + next media
   - [x] open playlist
   - [x] toggle loop button
-    - [ ] loop 
-    - [ ] loop one
-  - [ ] shuffle
+    - [x] loop 
+    - [x] loop one
+  - [x] shuffle
   - [ ] volume
+    - [ ] scroll to volume up
+    - [ ] reset volume
   - [ ] speed
+    - [ ] scroll to speed up
+    - [ ] reset speed
 - [ ] timeline slider
   - [x] preview come up with slider (while played only)
   - [x] change media position by 
     - [x] dragging thumb 
     - [x] or clicking on track
+    - [ ] can continue dragging after clicking
 - [ ] playlist window 
   - [x] add, remove playlist
     - [ ] auto name new playlist 

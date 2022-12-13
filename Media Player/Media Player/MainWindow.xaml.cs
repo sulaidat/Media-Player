@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
@@ -31,7 +33,16 @@ namespace Media_Player
         Image _imgRepeatOne;
         PlaylistWindow _playlistWindow;
         bool _sliderBeingDragged = false;
+        /*
+         _loopState: 
+            - null: None
+            - true: Loop Playlist
+            - false: Loop One Media
+         */
         bool? _loopState = null;
+        bool _shuffleMode = false;
+        ShuffleIndices _shuffleIndices;
+        MediaSelectedArgs _currentMediaInfo;
 
 
         public MainWindow()
@@ -59,7 +70,7 @@ namespace Media_Player
             dialog.Filter = "Media files (*.mp3;*.mp4)|*.mp3;*.mp4|All files (*.*)|*.*";
             if (dialog.ShowDialog() ?? false)
             {
-                PrepareMedia(null, dialog.FileName);
+                PrepareSingleMedia(null, dialog.FileName);
             }
         }
 
@@ -161,9 +172,37 @@ namespace Media_Player
 
         }
 
+        // this behavior happens when media end without Next and Previous button pressing
+        // OnMediaEnded depends on LoopOne and Shuffle mode
         private void OnMediaEnded(object sender, RoutedEventArgs e)
         {
             StopMedia();
+            if (_currentMediaInfo != null && _loopState != false) // Loop One is not enabled
+            {
+                if (_shuffleMode)
+                {
+                    // if shuffle mode is on and shuffleIndices is not end
+                    if (!_shuffleIndices.IsEnd())
+                    {
+                        NextMedia();
+                        PlayMedia();
+                    }
+                }
+                else
+                {
+                    // if there's a next media
+                    if (_currentMediaInfo.MediaIndex < _currentMediaInfo.MediaList.Count - 1)
+                    {
+                        NextMedia();
+                        PlayMedia();
+                    }
+                    // else return to beginning
+                    else
+                    {
+                        NextMedia();
+                    }
+                }
+            }
         }
 
         private void OnDragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
@@ -187,7 +226,20 @@ namespace Media_Player
             _playlistWindow.Show();
         }
 
-        private void PrepareMedia(object? sender, string filePath)
+        private void PrepareMedia(object? sender, MediaSelectedArgs args)
+        {
+            _currentMediaInfo = args;
+            var filePath = _currentMediaInfo.MediaList[_currentMediaInfo.MediaIndex].Path;
+            this.Title = $"Now playing {filePath}";
+            mediaView.Source = new Uri(filePath, UriKind.Absolute);
+
+            // ???????
+            mediaView.Play();
+            mediaView.Stop();
+
+            ForcePlayMedia();
+        }
+        private void PrepareSingleMedia(object? sender, string filePath)
         {
             this.Title = $"Now playing {filePath}";
             mediaView.Source = new Uri(filePath, UriKind.Absolute);
@@ -249,7 +301,7 @@ namespace Media_Player
                 btn_loop.Content = _imgRepeatOne;
                 mediaView.MediaEnded -= Loop;
                 mediaView.MediaEnded += LoopOne;
-            } 
+            }
             // loop one to none
             else if (_loopState == false)
             {
@@ -262,11 +314,102 @@ namespace Media_Player
 
         private void Loop(object sender, RoutedEventArgs e)
         {
+            NextMedia();
             PlayMedia();
         }
         private void LoopOne(object sender, RoutedEventArgs e)
         {
             PlayMedia();
+        }
+
+        // NextMedia and PreviousMedia only depends on shuffle mode
+        private void NextMedia()
+        {
+            if (_currentMediaInfo == null) return;
+            if (_shuffleMode == false)
+            {
+                _currentMediaInfo.MediaIndex = (_currentMediaInfo.MediaIndex + 1 >= _currentMediaInfo.MediaList.Count) ? 0 : _currentMediaInfo.MediaIndex + 1;
+            }
+            else
+            {
+                _currentMediaInfo.MediaIndex = _shuffleIndices.Next();
+            }
+            var filePath = _currentMediaInfo.MediaList[_currentMediaInfo.MediaIndex].Path;
+            this.Title = $"Now playing {filePath}";
+            mediaView.Source = new Uri(filePath);
+        }
+        private void PreviousMedia()
+        {
+            if (_currentMediaInfo == null) return;
+            if (_shuffleMode == false)
+            {
+                _currentMediaInfo.MediaIndex = (_currentMediaInfo.MediaIndex - 1 < 0) ? _currentMediaInfo.MediaList.Count - 1 : _currentMediaInfo.MediaIndex - 1;
+            }
+            else
+            {
+                _currentMediaInfo.MediaIndex = _shuffleIndices.Next();
+            }
+            var filePath = _currentMediaInfo.MediaList[_currentMediaInfo.MediaIndex].Path;
+            this.Title = $"Now playing {filePath}";
+            mediaView.Source = new Uri(filePath);
+        }
+
+        private void OnClick_PlayNextMedia(object sender, RoutedEventArgs e)
+        {
+            NextMedia();
+            PlayMedia();
+        }
+
+        private void OnClick_PlayPreviousMedia(object sender, RoutedEventArgs e)
+        {
+            PreviousMedia();
+            PlayMedia();
+        }
+
+        private void OnClick_ToggleShuffleMode(object sender, RoutedEventArgs e)
+        {
+            if (_shuffleMode == false)
+            {
+                _shuffleMode = true;
+                btn_shuffle.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#a0a0a4");
+                _shuffleIndices = new ShuffleIndices(_currentMediaInfo.MediaList.Count);
+            }
+            else
+            {
+                _shuffleMode = false;
+                btn_shuffle.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#dddddd");
+            }
+        }
+
+        public class ShuffleIndices
+        {
+            private List<int> _indices;
+            private int _currentIndex;
+
+            public ShuffleIndices(int count)
+            {
+                var random = new Random();
+                var candidates = new HashSet<int>();
+                while (candidates.Count < count)
+                {
+                    candidates.Add(random.Next() % count);
+                }
+                _indices = new List<int>();
+                _indices.AddRange(candidates);
+                _currentIndex = 0;
+            }
+            public int Next()
+            {
+                if (_currentIndex >= _indices.Count)
+                {
+                    _currentIndex = 0;
+                }
+                return _indices[_currentIndex++];
+            }
+            public bool IsEnd()
+            {
+                return (_currentIndex == _indices.Count) ? true : false;
+            }
         }
     }
 }
