@@ -9,9 +9,9 @@
 
 # B. Suggested improvement (3 points)
 
-- [ ] Store recently played files
+- [x] Store recently played files
 - [ ] Keep last played position for continuous viewing
-- [ ] Support both audio and video files (choose your own favorite popular formats like mp3, flv, mpg)
+- [x] Support both audio and video files (choose your own favorite popular formats like mp3, flv, mpg)
 - [ ] Display preview when seeking
 - [ ] Add hooking to support global shortcut key for pause / play / skip to next file
 
@@ -30,10 +30,10 @@
     - [x] loop 
     - [x] loop one
   - [x] shuffle
-  - [ ] volume
+  - [x] volume
     - [ ] scroll to volume up
     - [ ] reset volume
-  - [ ] speed
+  - [x] speed
     - [ ] scroll to speed up
     - [ ] reset speed
 - [ ] timeline slider

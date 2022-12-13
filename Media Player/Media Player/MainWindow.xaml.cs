@@ -1,8 +1,12 @@
 ﻿using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,6 +22,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using static Media_Player.PlaylistPage;
+using Path = System.IO.Path;
 
 namespace Media_Player
 {
@@ -43,6 +49,7 @@ namespace Media_Player
         bool _shuffleMode = false;
         ShuffleIndices _shuffleIndices;
         MediaSelectedArgs _currentMediaInfo;
+        string _currentSingleMedia;
 
 
         public MainWindow()
@@ -226,6 +233,30 @@ namespace Media_Player
             _playlistWindow.Show();
         }
 
+        private void PrepareMedia()
+        {
+            if (_currentSingleMedia == null && _currentSingleMedia == null) return;
+            if (_currentMediaInfo != null)
+            {
+                var filePath = _currentMediaInfo.MediaList[_currentMediaInfo.MediaIndex].Path;
+                this.Title = $"Now playing {filePath}";
+                mediaView.Source = new Uri(filePath, UriKind.Absolute);
+
+                // ???????
+                mediaView.Play();
+                mediaView.Stop();
+            }
+            else if (_currentSingleMedia != null)
+            {
+                var filePath = _currentSingleMedia;
+                this.Title = $"Now playing {filePath}";
+                mediaView.Source = new Uri(filePath, UriKind.Absolute);
+
+                // ???????
+                mediaView.Play();
+                mediaView.Stop();
+            }
+        }
         private void PrepareMedia(object? sender, MediaSelectedArgs args)
         {
             _currentMediaInfo = args;
@@ -241,6 +272,7 @@ namespace Media_Player
         }
         private void PrepareSingleMedia(object? sender, string filePath)
         {
+            _currentSingleMedia = filePath;
             this.Title = $"Now playing {filePath}";
             mediaView.Source = new Uri(filePath, UriKind.Absolute);
 
@@ -278,11 +310,40 @@ namespace Media_Player
             // subscribe _playlistWindow
             _playlistWindow = PlaylistWindow.GetInstance();
             _playlistWindow.MediaSelected += PrepareMedia;
+
+            // load Saved State
+            string directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string filePath = Path.Combine(directory, "current_state.json");
+            if (File.Exists(filePath))
+            {
+                var savedState = JsonConvert.DeserializeObject<SavedState>(File.ReadAllText(filePath));
+                _currentMediaInfo = savedState.CurrentMediaInfo;
+                _currentSingleMedia = savedState.CurrentSingleMedia;
+            }
+
+            PrepareMedia();
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            SaveCurrentState();
             _playlistWindow.Close();
+        }
+
+        private void SaveCurrentState()
+        {
+            var savedState = new SavedState();
+            savedState.CurrentMediaInfo = _currentMediaInfo;
+            savedState.CurrentSingleMedia = _currentSingleMedia;
+
+            var json = JsonConvert.SerializeObject(savedState);
+            File.WriteAllText("current_state.json", json);
+        }
+
+        public class SavedState
+        {
+            public MediaSelectedArgs CurrentMediaInfo { get; set; }
+            public string CurrentSingleMedia { get; set; }
         }
 
         private void OnClick_ToggleLoop(object sender, RoutedEventArgs e)
@@ -400,15 +461,25 @@ namespace Media_Player
             }
             public int Next()
             {
+                ++_currentIndex;
                 if (_currentIndex >= _indices.Count)
                 {
                     _currentIndex = 0;
                 }
-                return _indices[_currentIndex++];
+                return _indices[_currentIndex];
+            }
+            public int Previous()
+            {
+                --_currentIndex;
+                if (_currentIndex < 0)
+                {
+                    _currentIndex = 0;
+                }
+                return _indices[_currentIndex];
             }
             public bool IsEnd()
             {
-                return (_currentIndex == _indices.Count) ? true : false;
+                return (_currentIndex + 1 == _indices.Count) ? true : false;
             }
         }
     }
