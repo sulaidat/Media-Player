@@ -61,11 +61,6 @@
                             </Style.Triggers>
                         </Style>
                     </ListView.ItemContainerStyle>
-                    <!--<ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical" />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -113,6 +108,11 @@
                     <Style TargetType="DataGridRow">
                         <Setter Property="ContextMenu" Value="{StaticResource rowMenu}" />
                         <EventSetter Event="MouseDoubleClick" Handler="OnMouseDoubleClick_PlayMedia" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsPlaying, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                <Setter Property="Background" Value="#a0a0a4" />
+                            </DataTrigger>
+                        </Style.Triggers>
                     </Style>
                 </DataGrid.ItemContainerStyle>
                 <DataGrid.Columns>

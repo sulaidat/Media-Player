@@ -21,9 +21,10 @@
   - [ ] if media is mp3
     - [ ] set icon as thumbnail by default
     - [ ] else set title as thumbnail
-
+  - [ ] Show first frame of video in WPF MediaElement
+  
 - [x] switch between Play and Pause button on click
-- [ ] buttons
+- [x] buttons
   - [x] previous + next media
   - [x] open playlist
   - [x] toggle loop button
@@ -37,11 +38,12 @@
     - [ ] scroll to speed up
     - [ ] reset speed
 - [ ] timeline slider
-  - [x] preview come up with slider (while played only)
+  - [x] video frame come up with slider (while played only)
   - [x] change media position by 
     - [x] dragging thumb 
     - [x] or clicking on track
-    - [ ] can continue dragging after clicking
+    - [x] can continue dragging after clicking
+      - [x] even with mouse leaving the thumb
 - [ ] playlist window 
   - [x] add, remove playlist
     - [ ] auto name new playlist 
@@ -52,7 +54,7 @@
     - [x] check duplicate when adding
   - [x] context menu
     - [x] rename
-      - [ ] select all text when focus on texbox
+      - [x] select all text when focus on texbox
     - [x] import, export playlist
   - [x] autosave playlist locally
   - [x] load playlists from `playlists.json`

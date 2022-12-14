@@ -48,6 +48,7 @@ namespace Media_Player
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             txt_name.Focus();
+            txt_name.SelectAll();
         }
     }
 }

@@ -21,8 +21,8 @@ namespace Media_Player
     {
         ObservableCollection<Playlist> _playlists { get; set; }
         public EventHandler<MediaSelectedArgs> MediaSelected;
-        private static PlaylistWindow _instance;
-        (int PlaylistIndex, int MediaIndex) _currentMedia;
+        static PlaylistWindow _instance;
+        MediaSelectedArgs _currentMediaInfo;
 
 
         public static PlaylistWindow GetInstance()
@@ -42,6 +42,27 @@ namespace Media_Player
         {
             LoadPlaylistFromFile("playlists.json");
             RemoveNonexistingMediaFromPlaylists();
+
+            _currentMediaInfo = new MediaSelectedArgs();
+            _currentMediaInfo.PropertyChanged += HighlightCurrentMedia;
+        }
+
+        private void HighlightCurrentMedia(object? sender, PropertyChangedEventArgs e)
+        {
+            var oldPlaylistIndex = _currentMediaInfo.OldPlaylistIndex;
+            var oldMediaIndex = _currentMediaInfo.OldMediaIndex;
+            var newPlaylistIndex = _currentMediaInfo.PlaylistIndex;
+            var newMediaIndex = _currentMediaInfo.MediaIndex;
+            _currentMediaInfo.OldPlaylistIndex = newPlaylistIndex;
+            _currentMediaInfo.OldMediaIndex = newMediaIndex;
+
+            // Unhighlight old media
+            _playlists[oldPlaylistIndex].IsPlaying = false;
+            _playlists[oldPlaylistIndex].List[oldMediaIndex].IsPlaying = false;
+
+            // Highlight current media
+            _playlists[newPlaylistIndex].IsPlaying = true;
+            _playlists[newPlaylistIndex].List[newMediaIndex].IsPlaying = true;
         }
 
         private void RemoveNonexistingMediaFromPlaylists()
@@ -76,6 +97,10 @@ namespace Media_Player
             {
                 playlist.PropertyChanged += SavePlaylists;
                 playlist.List.CollectionChanged += SavePlaylists;
+                foreach (var media in playlist.List)
+                {
+                    media.PropertyChanged += SavePlaylists;
+                }
             }
 
             listview_playlist.ItemsSource = _playlists;
@@ -93,6 +118,10 @@ namespace Media_Player
             File.WriteAllText("playlists.json", json);
         }
 
+        public void SendData(MediaSelectedArgs args)
+        {
+            _currentMediaInfo = args;
+        }
 
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -140,6 +169,8 @@ namespace Media_Player
             newMedia.Path = filePath;
             newMedia.Name = Path.GetFileName(filePath);
             newMedia.IsPlaying = false;
+            newMedia.PropertyChanged += SavePlaylists;
+
             _playlists[listview_playlist.SelectedIndex].List.Add(newMedia);
         }
 
@@ -165,18 +196,11 @@ namespace Media_Player
 
         private void OnMouseDoubleClick_PlayMedia(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            //_currentMedia.PlaylistIndex = listview_playlist.SelectedIndex;
-            //_currentMedia.MediaIndex = datagrid_medias.SelectedIndex;
-            //_playlists[_currentMedia.PlaylistIndex].List[_currentMedia.MediaIndex].IsPlaying = true;
-            //_playlists[_currentMedia.PlaylistIndex].Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#a0a0a4");
-            
-            _playlists[listview_playlist.SelectedIndex].IsPlaying = true;
+            _currentMediaInfo.PlaylistIndex = listview_playlist.SelectedIndex;
+            _currentMediaInfo.MediaIndex = datagrid_medias.SelectedIndex;
+            _currentMediaInfo.Playlist = _playlists[listview_playlist.SelectedIndex].List;
 
-            var args = new MediaSelectedArgs();
-            args.Playlist = _playlists[listview_playlist.SelectedIndex].List;
-            args.PlaylistIndex = listview_playlist.SelectedIndex;
-            args.MediaIndex = datagrid_medias.SelectedIndex;
-            MediaSelected?.Invoke(this, args);
+            MediaSelected?.Invoke(this, _currentMediaInfo);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -257,10 +281,43 @@ namespace Media_Player
         }
     }
 
-    public class MediaSelectedArgs: EventArgs
+    public class MediaSelectedArgs: EventArgs, INotifyPropertyChanged
     {
+        int _playlistIndex;
+        int _mediaIndex;
+
         public ObservableCollection<Media> Playlist { get; set; }
-        public int PlaylistIndex { get; set; }
-        public int MediaIndex { get; set; }
+        public int PlaylistIndex
+        {
+            get
+            {
+                return _playlistIndex;
+            }
+            set
+            {
+                _playlistIndex = value;
+                EmitPropertyChanged();
+            }
+        }
+        public int MediaIndex
+        {
+            get
+            {
+                return _mediaIndex;
+            }
+            set
+            {
+                _mediaIndex = value;
+                EmitPropertyChanged();
+            }
+        }
+        public int OldPlaylistIndex { get; set; }
+        public int OldMediaIndex { get; set; }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void EmitPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

@@ -31,3 +31,5 @@ D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\
 D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\Media Player.csproj.CopyComplete
 D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\bin\Debug\net6.0-windows\Newtonsoft.Json.dll
 D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\bin\Debug\net6.0-windows\Newtonsoft.Json.Bson.dll
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\Themes\Generic.baml
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Media Player\Media Player\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs

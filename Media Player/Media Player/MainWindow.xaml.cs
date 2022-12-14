@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Resources;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using System.Transactions;
 using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -22,7 +24,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using static Media_Player.PlaylistPage;
 using Path = System.IO.Path;
 
 namespace Media_Player
@@ -97,10 +98,29 @@ namespace Media_Player
             }
         }
 
-        public class SavedState
+        public class SavedState:INotifyPropertyChanged
         {
-            public MediaSelectedArgs CurrentMediaInfo { get; set; }
+            MediaSelectedArgs _currentMediaInfo;
+            public MediaSelectedArgs CurrentMediaInfo
+            {
+                get
+                {
+                    return _currentMediaInfo;
+                }
+                set
+                {
+                    _currentMediaInfo = value;
+                    EmitPropertyChanged();
+                }
+            }
             public string CurrentSingleMedia { get; set; }
+
+            public event PropertyChangedEventHandler? PropertyChanged;
+
+            private void EmitPropertyChanged([CallerMemberName] String propertyName = "")
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -124,15 +144,24 @@ namespace Media_Player
             _timer.Interval = TimeSpan.FromMilliseconds(500);
             _timer.Tick += TimerTick;
 
-            // start once
+            // fire and forget
             _timer.Start();
 
-            // subscribe _playlistWindow
+            // subscribe _playlistWindow hooks
             _playlistWindow = PlaylistWindow.GetInstance();
             _playlistWindow.MediaSelected += PrepareAndPlayMediaFromPlaylist;
 
+            // subcribe _currentPlaylistInfo hooks
+            _currentPlaylistInfo = new MediaSelectedArgs();
+            _currentPlaylistInfo.PropertyChanged += SendDataToPlaylistWindow;
+
             // load SavedState from file
             LoadSavedStateFromFile("current_state.json");
+        }
+
+        private void SendDataToPlaylistWindow(object? sender, PropertyChangedEventArgs e)
+        {
+            _playlistWindow.SendData(_currentPlaylistInfo);
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -170,12 +199,14 @@ namespace Media_Player
             string filePath = Path.Combine(directory, filename);
             if (File.Exists(filePath))
             {
-                var savedState = JsonConvert.DeserializeObject<SavedState>(File.ReadAllText(filePath));
+                var savedState = new SavedState();
+                //savedState.PropertyChanged += SendDataToPlaylistWindow;
+                savedState = JsonConvert.DeserializeObject<SavedState>(File.ReadAllText(filePath));
                 _currentPlaylistInfo = savedState.CurrentMediaInfo;
                 _currentSingleMedia = savedState.CurrentSingleMedia;
             }
 
-            if (_currentSingleMedia == null && _currentSingleMedia == null) return;
+            if (_currentPlaylistInfo == null && _currentSingleMedia == null) return;
 
             // Prepare media
             if (_currentPlaylistInfo != null)
@@ -205,11 +236,18 @@ namespace Media_Player
             {
                 toggle_play.IsChecked = true;
             }
-            //else
-            //{
-            //    toggle_play.IsChecked = false;
-            //    toggle_play.IsChecked = true;
-            //}
+        }
+        private void ForcePlayMedia()
+        {
+            if (toggle_play.IsChecked == false)
+            {
+                toggle_play.IsChecked = true;
+            }
+            else
+            {
+                toggle_play.IsChecked = false;
+                toggle_play.IsChecked = true;
+            }
         }
         private void PauseMedia()
         {
@@ -247,19 +285,6 @@ namespace Media_Player
 
             ForcePlayMedia();
         }
-        // check and uncheck to trigger play and pause
-        private void ForcePlayMedia()
-        {
-            if (!toggle_play.IsChecked ?? true)
-            {
-                toggle_play.IsChecked = true;
-            }
-            else
-            {
-                toggle_play.IsChecked = false;
-                toggle_play.IsChecked = true;
-            }
-        }
 
         // NextMedia and PreviousMedia only depends on shuffle mode
         private void NextMedia()
@@ -292,9 +317,11 @@ namespace Media_Player
             this.Title = $"Now playing {filePath}";
             mediaView.Source = new Uri(filePath);
         }
+
         #endregion
 
         #region Event Handlers
+
         void OnClick_OpenMedia(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
@@ -304,7 +331,6 @@ namespace Media_Player
                 PrepareAndPlaySingleMedia(null, dialog.FileName);
             }
         }
-
         void OnChecked_PlayMedia(object sender, RoutedEventArgs e)
         {
             if (mediaView.Source != null)
@@ -321,18 +347,15 @@ namespace Media_Player
                 mediaView.Pause();
             }
         }
-
         // Stop the media.
         void OnClick_StopMedia(object sender, RoutedEventArgs e)
         {
             StopMedia();
         }
-
         private void OnMediaOpened(object sender, RoutedEventArgs e)
         {
 
         }
-
         // this behavior happens when media end without Next and Previous button pressing
         // OnMediaEnded depends on LoopOne and Shuffle mode
         private void OnMediaEnded(object sender, RoutedEventArgs e)
@@ -365,23 +388,21 @@ namespace Media_Player
                 }
             }
         }
-
         private void OnDragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
         {
             _sliderBeingDragged = true;
+            //popup_preview.IsOpen = true;
         }
-
         private void OnDragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
             _sliderBeingDragged = false;
+            //popup_preview.IsOpen = false;
         }
-
         private void OnSliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             mediaView.Position = TimeSpan.FromSeconds(slider_timeline.Value);
             txt_progress.Text = TimeSpan.FromSeconds(slider_timeline.Value).ToString(@"hh\:mm\:ss");
         }
-
         private void OnClick_OpenPlaylist(object sender, RoutedEventArgs e)
         {
             _playlistWindow.Show();
@@ -418,7 +439,6 @@ namespace Media_Player
             NextMedia();
             PlayMedia();
         }
-
         private void OnClick_PlayPreviousMedia(object sender, RoutedEventArgs e)
         {
             PreviousMedia();
@@ -439,9 +459,8 @@ namespace Media_Player
                 btn_shuffle.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#dddddd");
             }
         }
+
         #endregion
-
-
 
         #region not use yet 
         // Change the volume of the media.
@@ -482,13 +501,6 @@ namespace Media_Player
         #endregion
 
 
-
-
-
-
-
-
-
         private void Loop(object sender, RoutedEventArgs e)
         {
             NextMedia();
@@ -498,9 +510,25 @@ namespace Media_Player
         {
             PlayMedia();
         }
+        private void OnMouseMove_MakeThumbFollow(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                //var popup = slider_timeline.Template.FindName("InfoPopup", slider_timeline) as CustomPopup;
+                //popup.IsOpen = true;
 
+                var slider = (Slider)sender;
+                Point position = e.GetPosition(slider);
+                double d = 1.0d / slider.ActualWidth * position.X;
+                var p = slider.Maximum * d;
+                slider.Value = p;
+            }
+        }
 
-
-
+        private void OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            //var popup = slider_timeline.Template.FindName("InfoPopup", slider_timeline) as CustomPopup;
+            //popup.IsOpen = false;
+        }
     }
 }

@@ -87,13 +87,49 @@
                 Name="txt_progress" 
                 Text="00:00:00" 
                 Margin="5, 0, 5, 0" />
+
+
             <Slider 
                 Grid.Column="1" 
                 Name="slider_timeline" 
                 Thumb.DragStarted="OnDragStarted" 
                 Thumb.DragCompleted="OnDragCompleted" 
+                MouseMove="OnMouseMove_MakeThumbFollow"
+                MouseUp="OnMouseUp"
                 IsMoveToPointEnabled="True"
-                ValueChanged="OnSliderValueChanged"/>
+                ValueChanged="OnSliderValueChanged">
+                <Slider.Template>
+                    <ControlTemplate TargetType="{x:Type Slider}">
+                        <Grid Background="#05000000">
+                            <local:CustomPopup x:Name="InfoPopup" Width="Auto" Height="Auto" PlacementTarget="{Binding ElementName=Thumb}" Placement="Top" StaysOpen="False" IsOpen="False" AllowsTransparency="True">
+                                <Border Padding="2" CornerRadius="3" Background="Black">
+                                    <TextBlock Foreground="White" Text="tuyendeptrai"></TextBlock>
+                                </Border>
+                            </local:CustomPopup>
+                            <Track x:Name="PART_Track">
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb" Width="10" Height="20">
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger SourceName="Thumb" Property="IsDragging" Value="True">
+                                <Setter Value="True" TargetName="InfoPopup" Property="IsOpen" />
+                            </Trigger>
+                            <Trigger SourceName="Thumb" Property="IsDragging" Value="False">
+                                <Setter Value="False" TargetName="InfoPopup" Property="IsOpen" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Slider.Template>
+                <!--<Slider.ToolTip>
+                    <ToolTip 
+                        StaysOpen="True">
+                        <TextBlock Text="tuyendeptrai" />
+                    </ToolTip>
+                </Slider.ToolTip>-->
+            </Slider>
             <TextBlock 
                 Grid.Column="2" 
                 Name="txt_duration" 
