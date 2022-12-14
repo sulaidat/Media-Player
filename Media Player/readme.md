@@ -13,7 +13,7 @@
 - [ ] Keep last played position for continuous viewing
 - [x] Support both audio and video files (choose your own favorite popular formats like mp3, flv, mpg)
 - [ ] Display preview when seeking
-- [ ] Add hooking to support global shortcut key for pause / play / skip to next file
+- [x] Add hooking to support global shortcut key for pause / play / skip to next file
 
 ### my checklist
 
@@ -37,16 +37,18 @@
   - [x] speed
     - [ ] scroll to speed up
     - [ ] reset speed
-- [ ] timeline slider
+- [x] timeline slider
   - [x] video frame come up with slider (while played only)
   - [x] change media position by 
     - [x] dragging thumb 
     - [x] or clicking on track
     - [x] can continue dragging after clicking
       - [x] even with mouse leaving the thumb
-- [ ] playlist window 
+  - [ ] display preview when seeking
+    - [x] "tuyendeptrai"
+- [x] playlist window 
   - [x] add, remove playlist
-    - [ ] auto name new playlist 
+    - [ ] auto name new playlist when added
   - [x] add, remove medias of a playlist
     - [x] select multiple medias
     - [x] drag files to add medias to playlist
@@ -67,7 +69,8 @@
   - [ ] media position
   - [ ] modes 
 
-- [ ] keyboard hook
-  - [ ] go forward x seconds
-  - [ ] go backward x seconds
-
+- [x] keyboard hook
+  - [x] fast forward
+  - [x] fast rewind
+  - [x] play/pause
+  - [x] skip (to previous/next media)

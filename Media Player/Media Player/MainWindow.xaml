@@ -5,7 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Media_Player"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" MinWidth="500" Loaded="Window_Loaded" Closed="Window_Closed">
+        Title="MainWindow" Height="450" Width="800" MinWidth="500" 
+        Loaded="Window_Loaded" 
+        Closed="Window_Closed"
+        KeyDown="OnKeyDown_HandleKeyboardInput"
+        >
 
     <Window.Resources >
         <Style TargetType="Menu">
@@ -59,10 +63,10 @@
             </ToolBar>
         </ToolBarTray>
 
-        <Frame Name="mainpage" Grid.Row="1"/>
         <!-- To interactively stop, pause, and play the media, the LoadedBehavior 
            property of the MediaElement must be set to "Manual". -->
         <MediaElement 
+            Focusable="True"
             Grid.Row="1"
             Name="mediaView" 
             StretchDirection="DownOnly"
@@ -97,7 +101,9 @@
                 MouseMove="OnMouseMove_MakeThumbFollow"
                 MouseUp="OnMouseUp"
                 IsMoveToPointEnabled="True"
-                ValueChanged="OnSliderValueChanged">
+                ValueChanged="OnSliderValueChanged"
+                >
+                <!--KeyDown="OnKeyDown_HandleKeyboardInput"--> 
                 <Slider.Template>
                     <ControlTemplate TargetType="{x:Type Slider}">
                         <Grid Background="#05000000">

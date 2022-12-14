@@ -141,7 +141,7 @@ namespace Media_Player
 
             // create timer
             _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMilliseconds(500);
+            _timer.Interval = TimeSpan.FromMilliseconds(10);
             _timer.Tick += TimerTick;
 
             // fire and forget
@@ -157,6 +157,9 @@ namespace Media_Player
 
             // load SavedState from file
             LoadSavedStateFromFile("current_state.json");
+
+            // focus on media
+            //mediaView.Focus();
         }
 
         private void SendDataToPlaylistWindow(object? sender, PropertyChangedEventArgs e)
@@ -180,6 +183,11 @@ namespace Media_Player
                 slider_timeline.Maximum = mediaView.NaturalDuration.TimeSpan.TotalSeconds;
                 txt_progress.Text = TimeSpan.FromSeconds(slider_timeline.Value).ToString(@"hh\:mm\:ss");
                 txt_duration.Text = TimeSpan.FromSeconds(slider_timeline.Maximum).ToString(@"hh\:mm\:ss");
+
+                //if (mediaView.IsFocused == true)
+                //{
+                //    this.Title = "focused";
+                //}
             }
         }
 
@@ -530,5 +538,50 @@ namespace Media_Player
             //var popup = slider_timeline.Template.FindName("InfoPopup", slider_timeline) as CustomPopup;
             //popup.IsOpen = false;
         }
+
+        private void OnKeyDown_HandleKeyboardInput(object sender, KeyEventArgs e)
+        {
+            if (mediaView.Source == null) return;
+            switch (e.Key)
+            {
+                case Key.Left:
+                    FastForwardMedia(10);
+                    break;
+                case Key.Right:
+                    FastRewindMedia(10);
+                    break;
+                case Key.Space:
+                    if (toggle_play.IsChecked == false)
+                    {
+                        PlayMedia();
+                    } else
+                    {
+                        PauseMedia();
+                    }
+                    break;
+                case Key.PageDown:
+                    PreviousMedia();
+                    PlayMedia();
+                    break;
+                case Key.PageUp:
+                    NextMedia();
+                    PlayMedia();
+                    break;
+            }
+        }
+
+        private void FastRewindMedia(int seconds)
+        {
+            mediaView.Position += TimeSpan.FromSeconds(seconds);
+            //slider_timeline.Value += seconds;
+        }
+
+        private void FastForwardMedia(int seconds)
+        {
+            mediaView.Position -= TimeSpan.FromSeconds(seconds);
+            //slider_timeline.Value -= seconds;
+        }
+
+   
     }
 }
