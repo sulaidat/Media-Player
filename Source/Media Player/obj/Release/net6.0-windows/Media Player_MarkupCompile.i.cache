@@ -1,0 +1,20 @@
+﻿Media Player
+1.0.0.0
+
+winexe
+C#
+.cs
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Source\Media Player\obj\Release\net6.0-windows\
+Media_Player
+none
+false
+TRACE;RELEASE;NET;NET6_0;NETCOREAPP
+D:\OneDrive - VNU-HCMUS\nam3\windows\Media-Player\Source\Media Player\App.xaml
+6-1768100949
+1-1606303973
+13-1955931960
+196-1953591939
+MainWindow.xaml;MediaPage.xaml;PlaylistPage.xaml;PlaylistRenameWindow.xaml;PlaylistWindow.xaml;Themes\Generic.xaml;
+
+False
+
