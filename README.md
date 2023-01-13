@@ -46,6 +46,8 @@ For detail about our progress, see list [link](https://github.com/sulaidat/Media
 
 ## Usage
 
+### Media Player Window 
+
 - To play a single file: `Media` -> `Open file` -> `Choose your file`
 - Key binding:
   - Fast forward/backward: Right/Left Arrow
