@@ -35,7 +35,6 @@ Delete `current_state.json` to refresh experience
 4. Autosave playlists locally
 5. Playlists can be import and export.
 6. Detect duplicate medias in a same playlist.
-7. 
 
 For detail about our progress, see list [link](https://github.com/sulaidat/Media-Player/blob/main/Media%20Player/readme.md) 
 
@@ -68,3 +67,8 @@ To use playlist, click the Playlist button (below the timeline bar)
 ## Rate our project
 
 8.5/10
+
+## Link Demo
+
+https://youtu.be/_VWSwyahBrE
+

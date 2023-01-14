@@ -370,7 +370,7 @@ namespace Media_Player
         private void OnMediaEnded(object sender, RoutedEventArgs e)
         {
             StopMedia();
-            if (_currentPlaylistInfo != null && _loopState != false) // Loop One is not enabled
+            if (_currentPlaylistInfo.Playlist != null && _loopState != false) // Loop One is not enabled
             {
                 if (_shuffleMode)
                 {
@@ -456,6 +456,7 @@ namespace Media_Player
 
         private void OnClick_ToggleShuffleMode(object sender, RoutedEventArgs e)
         {
+            if (_currentPlaylistInfo.Playlist == null) return;
             if (_shuffleMode == false)
             {
                 _shuffleMode = true;
