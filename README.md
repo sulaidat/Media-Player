@@ -5,8 +5,8 @@
 ## About us
 
 - Nguyễn Quang Tuyến - 20120621
-- Phan Nhật Triều - 
-- Nguyễn Duy Tiến - 
+- Phan Nhật Triều - 20120605
+- Nguyễn Duy Tiến - 20120594
 
 Email to contact: tuyenvx.lqd@gmail.com
 
